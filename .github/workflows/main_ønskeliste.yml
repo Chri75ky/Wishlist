@@ -23,8 +23,7 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-        
-      - uses: azure/login@v1
+         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
@@ -39,6 +38,11 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+      - name: Sample Azure action
+      - uses: azure/login@v1
+        with: # Set Azure credentials secret as an input
+         credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
