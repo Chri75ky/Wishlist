@@ -18,7 +18,7 @@ jobs:
       - name: Sample Azure action
         uses: azure/login@v1
         with: # Set Azure credentials secret as an input
-         credentials: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+         creds: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
          
       - uses: actions/checkout@v2
 
