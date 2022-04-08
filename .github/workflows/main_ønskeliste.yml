@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy WAR app to Azure Web App - Ønskeliste
+name: Build and deploy JAR app to Azure Web App - Ønskeliste
 
 on:
   push:
@@ -14,12 +11,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    
-      - name: Sample Azure action
-        uses: azure/login@v1
-        with: # Set Azure credentials secret as an input
-         creds: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-         
       - uses: actions/checkout@v2
 
       - name: Set up Java version
@@ -29,12 +20,12 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-         
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          path: '${{ github.workspace }}/target/*.war'
 
   deploy:
     runs-on: windows-latest
@@ -43,7 +34,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    steps:      
+    steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
@@ -51,8 +42,7 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
+        
         uses: azure/webapps-deploy@v2
         with:
-          app-name: Ønskeliste
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: 'my/target/*.jar'
