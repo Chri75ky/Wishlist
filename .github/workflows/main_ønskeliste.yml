@@ -14,6 +14,12 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    
+      - name: Sample Azure action
+      - uses: azure/login@v1
+        with: # Set Azure credentials secret as an input
+         credentials: ${{ secrets.AZURE_CREDENTIALS }}
+         
       - uses: actions/checkout@v2
 
       - name: Set up Java version
@@ -37,12 +43,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    steps:
-      - name: Sample Azure action
-      - uses: azure/login@v1
-        with: # Set Azure credentials secret as an input
-         credentials: ${{ secrets.AZURE_CREDENTIALS }}
-      
+    steps:      
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
